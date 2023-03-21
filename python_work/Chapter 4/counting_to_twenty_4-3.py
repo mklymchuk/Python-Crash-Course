@@ -1,0 +1,1 @@
+for one_to_twenty in range(1,21): print(one_to_twenty)
