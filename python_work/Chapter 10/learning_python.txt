@@ -1,0 +1,3 @@
+In Python you can crate lists and tuples
+In Python you can crate variables
+In Python you can write classes
