@@ -1,0 +1,3 @@
+I like to type code
+I like Python
+I like C language
