@@ -1,4 +1,4 @@
-filename = 'guest_book.txt'
+filename = 'txt/guest_book.txt'
 program_flag = True
 
 def guest_record(guest_name):

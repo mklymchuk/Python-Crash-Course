@@ -1,4 +1,4 @@
-filename = 'question_answers.txt'
+filename = 'txt/question_answers.txt'
 program_flag = True
 
 def question_answers(question_answer):

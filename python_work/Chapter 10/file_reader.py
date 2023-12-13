@@ -1,6 +1,5 @@
-linux_file_path = '/home/mykola/Visual Studio Code/Python/Python Crash Course/python_work/Chapter 10/pi_digits.txt'
-mac_file_path = '/Users/kola/VSCode/Python-Crash-Course/python_work/Chapter 10/pi_digits.txt'
-filename = '/Users/kola/VSCode/Python-Crash-Course/python_work/Chapter 10/pi_million_digits.txt'
+mac_file_path = 'txt/pi_digits.txt'
+filename = 'txt/pi_million_digits.txt'
 
 with open(mac_file_path) as file_object:
     contents = file_object.read()
