@@ -1,5 +1,5 @@
 import unittest
-from name_function import get_formatted_name
+from python_work.Chapter_11.name_function import get_formatted_name
 
 class NamesTestCase(unittest.TestCase):
     """Tests for 'name_function.py'"""

@@ -1,5 +1,5 @@
 import unittest
-from survey import AnonymousSurvey
+from python_work.Chapter_11.survey import AnonymousSurvey
 
 class TestAnonymousSurvey(unittest.TestCase):
     """Tests for the class AnonymousSurvey"""

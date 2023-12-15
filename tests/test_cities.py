@@ -1,5 +1,5 @@
 import unittest
-from city_function import city_country
+from python_work.Chapter_11.city_function import city_country
 
 class CityCountryTestCase(unittest.TestCase):
     """Test correct output of city country"""

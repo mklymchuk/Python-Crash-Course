@@ -3,7 +3,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./python_work",
+        "./tests",
         "-p",
         "test_*.py"
     ],
@@ -11,5 +11,8 @@
     "python.testing.unittestEnabled": true,
     "python.testing.pytestArgs": [
         "."
+    ],
+    "python.analysis.extraPaths": [
+        "./python_work/Chapter_11"
     ]
 }
