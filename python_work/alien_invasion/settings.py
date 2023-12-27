@@ -8,8 +8,8 @@ class Settings:
         # Screen setttings
         self.screen_width = 1200
         self.screen_height = 800
-        #self.bg_color = (230, 230, 230)
-        self.bg_color = blue_sky_color
+        self.bg_color = (230, 230, 230)
+        # self.bg_color = blue_sky_color
         
         # Ship settings
         self.ship_speed = 1.5
