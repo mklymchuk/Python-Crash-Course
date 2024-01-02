@@ -1,8 +1,9 @@
 import sys
 import pygame
+from random import randint
 
-DISPLAY_WIDTH = 1280.0
-DISPLAY_HEIGHT = 720.0
+DISPLAY_WIDTH = 1280
+DISPLAY_HEIGHT = 720
 
 RAINDROP = 'python_work/alien_invasion/images/raindrop.bmp'
 
@@ -19,6 +20,7 @@ class Raindrops:
         
         # Resourse load
         self.raindrop_image = pygame.image.load(RAINDROP)
+        self.raindrop_width, self.raindrop_height = self.raindrop_image.get_rect().size
         
         # Screen background color
         self.bg_color = (255, 255, 255)
@@ -30,6 +32,24 @@ class Raindrops:
                 if event.type == pygame.QUIT:
                     sys.exit()
                     
+            self._rain()
+            pygame.display.flip()
+    
+    def _rain(self):
+        """Where rain created"""
+        self.screen.fill(self.bg_color)
+        
+        number_of_raindrops_in_row = DISPLAY_WIDTH // self.raindrop_width - self.raindrop_width
+        number_of_rows = DISPLAY_HEIGHT // self.raindrop_height - self.raindrop_height
+        
+        rain = randint(0, 10)
+        for raindrop in  range(number_of_rows):
+            for raindrop_number in range(number_of_raindrops_in_row):
+                raindrop_x = raindrop_number * self.raindrop_width
+                raindrop_y = raindrop * self.raindrop_height
+                raindrop_rect = pygame.Rect(raindrop_x, raindrop_y, self.raindrop_width, self.raindrop_height)
+                self.screen.blit(self.raindrop_image, raindrop_rect.topleft)
+                        
 if __name__ == '__main__':
     raindrops = Raindrops()
     raindrops.run_rain()
