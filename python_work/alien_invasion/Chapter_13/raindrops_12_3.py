@@ -7,6 +7,20 @@ DISPLAY_HEIGHT = 720
 
 RAINDROP = 'python_work/alien_invasion/images/raindrop.bmp'
 
+class Raindrop(Sprite):
+    """A class to represent a raindrop."""
+    
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.image.load(RAINDROP)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        
+    def update(self):
+        """Move the raindrop down."""
+        self.rect.y += 1
+
 class Raindrops:
     """Raindrops on the screen"""
     
@@ -16,14 +30,20 @@ class Raindrops:
         
         # Display settings
         self.screen = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
-        pygame.display.set_caption("Raindrops")
         
-        # Resourse load
+        # Distance between raindrops taken from image width, and height
         self.raindrop_image = pygame.image.load(RAINDROP)
         self.raindrop_width, self.raindrop_height = self.raindrop_image.get_rect().size
         
+        pygame.display.set_caption("Raindrops")
+        
+        # Resource load
+        self.raindrops_group = Group()
+        
         # Screen background color
         self.bg_color = (255, 255, 255)
+        
+        self._create_raindrops()
         
     def run_rain(self):
         """Run rain"""
@@ -38,25 +58,21 @@ class Raindrops:
     def _rain(self):
         """Where rain created"""
         self.screen.fill(self.bg_color)
-        
+        self.raindrops_group.update()
+        self.raindrops_group.draw(self.screen)
+                
+    def _create_raindrops(self):
+        """Create a grid of raindrops."""
         number_of_raindrops_in_row = DISPLAY_WIDTH // self.raindrop_width
         number_of_rows = DISPLAY_HEIGHT // self.raindrop_height
         
-        for raindrop in  range(number_of_rows):
+        for row in range(number_of_rows):
             for raindrop_number in range(number_of_raindrops_in_row):
                 raindrop_x = raindrop_number * self.raindrop_width
-                raindrop_y = raindrop * self.raindrop_height
-                raindrop_rect = pygame.Rect(raindrop_x, raindrop_y, self.raindrop_width, self.raindrop_height)
-                self._raindrop(number_of_rows)
-                self.screen.blit(self.raindrop_image, raindrop_rect.topleft)
-                
-    def _raindrop(self, number_of_rows):
-        """Drop an entire grid of raindrops"""
-        raindrop_speed = 1
-        for raindrop in range(number_of_rows):
-            raindrop.rect.y += raindrop_speed
+                raindrop_y = row * self.raindrop_height
+                raindrop = Raindrop(raindrop_x, raindrop_y)
+                self.raindrops_group.add(raindrop)
             
-                        
 if __name__ == '__main__':
     raindrops = Raindrops()
     raindrops.run_rain()
