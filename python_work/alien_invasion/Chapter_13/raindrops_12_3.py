@@ -1,6 +1,6 @@
 import sys
 import pygame
-from random import randint
+from pygame.sprite import Group, Sprite
 
 DISPLAY_WIDTH = 1280
 DISPLAY_HEIGHT = 720
@@ -39,16 +39,23 @@ class Raindrops:
         """Where rain created"""
         self.screen.fill(self.bg_color)
         
-        number_of_raindrops_in_row = DISPLAY_WIDTH // self.raindrop_width - self.raindrop_width
-        number_of_rows = DISPLAY_HEIGHT // self.raindrop_height - self.raindrop_height
+        number_of_raindrops_in_row = DISPLAY_WIDTH // self.raindrop_width
+        number_of_rows = DISPLAY_HEIGHT // self.raindrop_height
         
-        rain = randint(0, 10)
         for raindrop in  range(number_of_rows):
             for raindrop_number in range(number_of_raindrops_in_row):
                 raindrop_x = raindrop_number * self.raindrop_width
                 raindrop_y = raindrop * self.raindrop_height
                 raindrop_rect = pygame.Rect(raindrop_x, raindrop_y, self.raindrop_width, self.raindrop_height)
+                self._raindrop(number_of_rows)
                 self.screen.blit(self.raindrop_image, raindrop_rect.topleft)
+                
+    def _raindrop(self, number_of_rows):
+        """Drop an entire grid of raindrops"""
+        raindrop_speed = 1
+        for raindrop in range(number_of_rows):
+            raindrop.rect.y += raindrop_speed
+            
                         
 if __name__ == '__main__':
     raindrops = Raindrops()
