@@ -20,6 +20,9 @@ class Raindrop(Sprite):
     def update(self):
         """Move the raindrop down."""
         self.rect.y += 1
+        # Reset the raindrop to the top if it reaches the bottom
+        if self.rect.bottom >= DISPLAY_HEIGHT:
+            self.rect.y = 0
 
 class Raindrops:
     """Raindrops on the screen"""
@@ -73,12 +76,6 @@ class Raindrops:
                 raindrop = Raindrop(raindrop_x, raindrop_y)
                 self.raindrops_group.add(raindrop)
     
-    def _check_rain_edge(self):
-        """Return True if raindrop is on the edge of the screen"""
-        screen_rect = self.screen.get_rect()
-        if self.rect.down >= screen_rect.down:
-            return True
-            
 if __name__ == '__main__':
     raindrops = Raindrops()
     raindrops.run_rain()
