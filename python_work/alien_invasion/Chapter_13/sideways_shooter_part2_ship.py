@@ -9,6 +9,7 @@ class Ship:
         """Ship and start position initialization"""
         self.screen = ss_game.screen
         self.screen_rect = ss_game.screen.get_rect()
+        self.settings = ss_game.settings
         
         # Load image of the ship
         self.ship = pygame.image.load(SHIP_IMAGE)
@@ -17,13 +18,23 @@ class Ship:
         # Start each new ship at the bottom in the left corner
         self.rect.midleft = self.screen_rect.midleft
         
-        # Movement flag
+        # Store a decimal value for the ship's horizontal position
+        self.y = float(self.rect.y)
+        
+        # Movement flags
         self.moving_down = False
+        self.moving_up = False
     
     def update(self):
-        """Update the ship position based on the movement flag"""
-        if self.moving_down:
-            self.rect.y += 1
+        """Update the ship's position based on the movement flags"""
+        # Update the ship's value, not the rect
+        if self.moving_down and self.rect.bottom <= self.screen_rect.bottom:
+            self.y += self.settings.ship_speed
+        if self.moving_up and self.rect.top > 0:
+            self.y -= self.settings.ship_speed
+            
+        # Update rect object from self.y
+        self.rect.y = self.y # type: ignore
                 
     def blitme(self):
         """Draw the ship at its current location"""

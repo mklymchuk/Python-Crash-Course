@@ -9,3 +9,6 @@ class SidewaysShooterPart2Settings:
         
         # Background color
         self.bg_color = (230, 230, 230)
+        
+        # Ship settings
+        self.ship_speed = 1.5
