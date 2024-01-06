@@ -30,17 +30,24 @@ class SidewaysShooterPart2:
         """Main loop where game runs"""
         while True:
             self._check_events()
+            self.ship.update()
             self._fill_the_screen()
             
-            
     def _check_events(self):
-        """Check events"""
+        """Respond to keypresses and mouse events."""
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_DOWN:
+                        # Move the ship down
+                        self.ship.moving_down = True
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_DOWN:
+                        self.ship.moving_down = False
                     
     def _fill_the_screen(self):
-        """Fill the screen"""
+        """Update images on the screen, and flip ti the new screen."""
         # Redrawn the screen during each pass through the loop
         self.screen.fill(self.settings.bg_color)  
         self.ship.blitme()
