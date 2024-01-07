@@ -2,6 +2,7 @@ import sys
 import pygame
 from sideways_shooter_part_2_settings import SidewaysShooterPart2Settings
 from sideways_shooter_part2_ship import Ship
+from sideways_shooter_part_2_bullet import Bullet
 
 """Sideway shooter where your ship in the left side of the screen, and aliens
 attack from the right side. You can move up and down, shoot boolets in aliens, 
@@ -25,13 +26,15 @@ class SidewaysShooterPart2:
         pygame.display.set_caption("Sideway Shooter part 2")
         
         self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
         
     def run_game(self):
         """Main loop where game runs"""
         while True:
             self._check_events()
             self.ship.update()
-            self._fill_the_screen()
+            self.bullets.update()
+            self._update_screen()
             
     def _check_events(self):
         """Respond to keypresses and mouse events."""
@@ -51,6 +54,8 @@ class SidewaysShooterPart2:
             self.ship.moving_up = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self.fire_bullet()
     
     def _check_keyup_events(self, event):
         """Respond to key releases"""
@@ -58,12 +63,19 @@ class SidewaysShooterPart2:
             self.ship.moving_down = False
         elif event.key == pygame.K_UP:
             self.ship.moving_up = False
+            
+    def fire_bullet(self):
+        """Create a new bullet and add it to the bullet group"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
         
-    def _fill_the_screen(self):
+    def _update_screen(self):
         """Update images on the screen, and flip ti the new screen."""
         # Redrawn the screen during each pass through the loop
         self.screen.fill(self.settings.bg_color)  
         self.ship.blitme()
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
               
         # Make display visible        
         pygame.display.flip()
