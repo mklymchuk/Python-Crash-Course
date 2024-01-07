@@ -16,7 +16,8 @@ class Bullet(Sprite):
             0, 0, self.settings.bullet_width, self.settings.bullet_height
             )
         
-        self.rect.midleft = ss_game.ship.rect.midleft
+        # Bullet appear from right part of ship rect
+        self.rect.midleft = (ss_game.ship.rect.right, ss_game.ship.rect.midleft[1])
 
         # Store the bullet's position as a decimal value
         self.x = float(self.rect.x)
