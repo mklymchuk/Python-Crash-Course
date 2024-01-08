@@ -112,8 +112,12 @@ class SidewaysShooterPart2:
         alien_width, alien_height = alien.rect.size
         alien.y = (alien_height + DISTANCE_BETWEEN_ALIENS * 2) * alien_number
         alien.rect.y = alien.y
-        alien.rect.x = alien_width + 2 * alien_width * row_number
+        
+        # Place aliens from the right side of the screen
+        alien.rect.x = self.settings.screen_width - alien_width - 2 * alien_width * row_number
+        
         self.aliens.add(alien)
+
 
     def _update_screen(self):
         """Update images on the screen, and flip ti the new screen."""
