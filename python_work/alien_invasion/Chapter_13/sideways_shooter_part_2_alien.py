@@ -19,5 +19,5 @@ class Alien(Sprite):
         self.rect.x = ss_game.settings.screen_width - self.rect.width
         self.rect.y = DISTANCE_BETWEEN_ALIENS
         
-        # Store the alien's exact horizontal position
-        self.x = float(self.rect.x)
+        # Store the alien's exact vertical position
+        self.y = float(self.rect.y)

@@ -91,18 +91,18 @@ class SidewaysShooterPart2:
         # Create an alien and find the number of aliens in a row
         # Spacing between each alien is equal to one alien width
         alien = Alien(self)
-        alien_width = alien.rect.width
+        alien_height = alien.rect.height
         available_space_y = self.settings.screen_height - (2 * DISTANCE_BETWEEN_ALIENS)
-        number_aliens_y = available_space_y // (2 * alien_width)
-        self.aliens.add(alien)
-        
+        number_aliens_y = available_space_y // (alien_height + DISTANCE_BETWEEN_ALIENS)
+    
         # Create a first row of aliens
         for alien_number in range(number_aliens_y):
             # Create an alien and place it in the row
             alien = Alien(self)
-            alien.y = alien_width + 2 * alien_width * alien_number
+            alien.y = alien_height + 2 * (DISTANCE_BETWEEN_ALIENS * 2) * alien_number
             alien.rect.y = alien.y
             self.aliens.add(alien)
+
         
     def _update_screen(self):
         """Update images on the screen, and flip ti the new screen."""
