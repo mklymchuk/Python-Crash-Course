@@ -5,6 +5,8 @@ from sideways_shooter_part2_ship import Ship
 from sideways_shooter_part_2_bullet import Bullet
 from sideways_shooter_part_2_alien import Alien
 
+DISTANCE_BETWEEN_ALIENS = 32
+
 """Sideway shooter where your ship in the left side of the screen, and aliens
 attack from the right side. You can move up and down, shoot boolets in aliens, 
 and when boolet have collision with alien, alien dissapear."""
@@ -86,9 +88,21 @@ class SidewaysShooterPart2:
                 
     def _create_fleet(self):
         """Create a fleet of aliens."""
-        # Make an alien
+        # Create an alien and find the number of aliens in a row
+        # Spacing between each alien is equal to one alien width
         alien = Alien(self)
+        alien_width = alien.rect.width
+        available_space_y = self.settings.screen_height - (2 * DISTANCE_BETWEEN_ALIENS)
+        number_aliens_y = available_space_y // (2 * alien_width)
         self.aliens.add(alien)
+        
+        # Create a first row of aliens
+        for alien_number in range(number_aliens_y):
+            # Create an alien and place it in the row
+            alien = Alien(self)
+            alien.y = alien_width + 2 * alien_width * alien_number
+            alien.rect.y = alien.y
+            self.aliens.add(alien)
         
     def _update_screen(self):
         """Update images on the screen, and flip ti the new screen."""
