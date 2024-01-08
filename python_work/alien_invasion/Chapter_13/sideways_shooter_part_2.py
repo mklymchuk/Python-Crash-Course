@@ -3,6 +3,7 @@ import pygame
 from sideways_shooter_part_2_settings import SidewaysShooterPart2Settings
 from sideways_shooter_part2_ship import Ship
 from sideways_shooter_part_2_bullet import Bullet
+from sideways_shooter_part_2_alien import Alien
 
 """Sideway shooter where your ship in the left side of the screen, and aliens
 attack from the right side. You can move up and down, shoot boolets in aliens, 
@@ -27,6 +28,9 @@ class SidewaysShooterPart2:
         
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+        
+        self._create_fleet()
         
     def run_game(self):
         """Main loop where game runs"""
@@ -79,6 +83,12 @@ class SidewaysShooterPart2:
         for bullet in self.bullets.copy():
             if bullet.rect.left >= self.settings.screen_width:
                 self.bullets.remove(bullet)
+                
+    def _create_fleet(self):
+        """Create a fleet of aliens."""
+        # Make an alien
+        alien = Alien(self)
+        self.aliens.add(alien)
         
     def _update_screen(self):
         """Update images on the screen, and flip ti the new screen."""
@@ -87,6 +97,7 @@ class SidewaysShooterPart2:
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.aliens.draw(self.screen)
               
         # Make display visible        
         pygame.display.flip()
