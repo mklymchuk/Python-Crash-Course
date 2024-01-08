@@ -91,17 +91,29 @@ class SidewaysShooterPart2:
         # Create an alien and find the number of aliens in a row
         # Spacing between each alien is equal to one alien width
         alien = Alien(self)
-        alien_height = alien.rect.height
+        alien_width, alien_height = alien.rect.size
         available_space_y = self.settings.screen_height - DISTANCE_BETWEEN_ALIENS * 2
         number_aliens_y = available_space_y // DISTANCE_BETWEEN_ALIENS
+        
+        # Determine the number of rows of aliens that fit on the screen.
+        ship_width = self.ship.rect.width
+        available_space_x = (self.settings.screen_width - alien_width - ship_width)
+        number_rows = available_space_x // (2 * alien_width)
     
         # Create a first row of aliens
-        for alien_number in range(number_aliens_y):
-            # Create an alien and place it in the row
-            alien = Alien(self)
-            alien.y = (alien_height + DISTANCE_BETWEEN_ALIENS * 2) * alien_number
-            alien.rect.y = alien.y
-            self.aliens.add(alien)
+        for row_number in range(number_rows):
+            for alien_number in range(number_aliens_y):
+                self._create_alien(alien_number, row_number)
+            
+    def _create_alien(self, alien_number, row_number):
+        """Create an alien and place it in the row."""
+        # Create an alien and place it in the row
+        alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+        alien.y = (alien_height + DISTANCE_BETWEEN_ALIENS * 2) * alien_number
+        alien.rect.y = alien.y
+        alien.rect.x = alien_width + 2 * alien_width * row_number
+        self.aliens.add(alien)
 
     def _update_screen(self):
         """Update images on the screen, and flip ti the new screen."""
