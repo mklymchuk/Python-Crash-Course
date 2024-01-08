@@ -40,6 +40,7 @@ class SidewaysShooterPart2:
             self._check_events()
             self.ship.update()
             self._update_bullets()
+            #self._update_aliens()
             self._update_screen()
             
     def _check_events(self):
@@ -86,6 +87,12 @@ class SidewaysShooterPart2:
             if bullet.rect.left >= self.settings.screen_width:
                 self.bullets.remove(bullet)
                 
+    def _update_aliens(self):
+        """Check if the fleet is at an edge, then update positions of all
+        aliens in the fleet"""
+        self._check_fleet_edges()
+        self.aliens.update()
+                
     def _create_fleet(self):
         """Create a fleet of aliens."""
         # Create an alien and find the number of aliens in a row
@@ -118,6 +125,18 @@ class SidewaysShooterPart2:
         
         self.aliens.add(alien)
 
+    def _check_fleet_edges(self):
+        """Respond appropriately if any aliens have reached an edge"""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+            
+    def _change_fleet_direction(self):
+        """Move left the entire fleet and change the fleet's direction"""
+        for alien in self.aliens.sprites():
+            alien.rect.x = self.settings.fleet_move_left_speed
+            self.settings.fleet_direction *= -1
 
     def _update_screen(self):
         """Update images on the screen, and flip ti the new screen."""

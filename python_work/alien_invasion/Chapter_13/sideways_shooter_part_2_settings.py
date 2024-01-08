@@ -19,3 +19,10 @@ class SidewaysShooterPart2Settings:
         self.bullet_height = 3
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 3
+        
+        # Alien settings
+        self.alien_speed = 1.0
+        self.fleet_drop_speed = 10
+        # fleet_direction of 1 represents down; -1 represents up
+        self.fleet_direction = 1
+        
