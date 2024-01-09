@@ -34,6 +34,10 @@ class SidewaysShooterPart2:
         
         self._create_fleet()
         
+        # Set the frame rate (e.g., 30 frames per second)
+        self.clock = pygame.time.Clock()
+        self.target_fps = 120
+        
     def run_game(self):
         """Main loop where game runs"""
         while True:
@@ -42,6 +46,9 @@ class SidewaysShooterPart2:
             self._update_bullets()
             self._update_aliens()
             self._update_screen()
+            
+        # Cap the frame rate to the target FPS
+            self.clock.tick(self.target_fps)
             
     def _check_events(self):
         """Respond to keypresses and mouse events."""
@@ -87,6 +94,10 @@ class SidewaysShooterPart2:
             if bullet.rect.left >= self.settings.screen_width:
                 self.bullets.remove(bullet)
                 
+        # Check for any bullets that have hit aliens
+        # If so, get rid of the bullet and the alien.
+        collision = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+                
     def _update_aliens(self):
         """Check if the fleet is at an edge, then update positions of all
         aliens in the fleet"""
@@ -99,15 +110,15 @@ class SidewaysShooterPart2:
         # Spacing between each alien is equal to one alien width
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
-        available_space_y = self.settings.screen_height - DISTANCE_BETWEEN_ALIENS * 2
-        number_aliens_y = available_space_y // DISTANCE_BETWEEN_ALIENS
+        available_space_y = self.settings.screen_height - (2 * alien_height)
+        number_aliens_y = available_space_y // alien_height
         
         # Determine the number of rows of aliens that fit on the screen.
         ship_width = self.ship.rect.width
-        available_space_x = (self.settings.screen_width - alien_width - ship_width)
+        available_space_x = self.settings.screen_width - (2 * alien_width) - ship_width
         number_rows = available_space_x // (2 * alien_width)
     
-        # Create a first row of aliens
+        # Create the full fleet of aliens
         for row_number in range(number_rows):
             for alien_number in range(number_aliens_y):
                 self._create_alien(alien_number, row_number)
@@ -121,7 +132,7 @@ class SidewaysShooterPart2:
         alien.rect.y = alien.y
         
         # Place aliens from the right side of the screen
-        alien.rect.x = self.settings.screen_width - alien_width - 2 * alien_width * row_number
+        alien.rect.x = self.settings.screen_width - alien_width - alien_width * row_number
         
         self.aliens.add(alien)
 
