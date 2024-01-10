@@ -1,6 +1,10 @@
 import sys
+from time import sleep
+
 import pygame
+
 from sideways_shooter_part_2_settings import SidewaysShooterPart2Settings
+from sideways_shooter_part_2_game_stats import GameStats
 from sideways_shooter_part2_ship import Ship
 from sideways_shooter_part_2_bullet import Bullet
 from sideways_shooter_part_2_alien import Alien
@@ -28,6 +32,9 @@ class SidewaysShooterPart2:
         
         pygame.display.set_caption("Sideway Shooter part 2")
         
+        # Create an instance to store game statistics
+        self.stats = GameStats(self)
+        
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -42,9 +49,12 @@ class SidewaysShooterPart2:
         """Main loop where game runs"""
         while True:
             self._check_events()
-            self.ship.update()
-            self._update_bullets()
-            self._update_aliens()
+            
+            if self.stats.game_active:  
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
+                
             self._update_screen()
             
         # Cap the frame rate to the target FPS
@@ -111,7 +121,34 @@ class SidewaysShooterPart2:
         aliens in the fleet"""
         self._check_fleet_edges()
         self.aliens.update()
-                
+        
+        # Look for alien-ship collisions
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
+            
+            # Look for aliens hitting the left of the screen
+            self._check_aliens_left()
+        
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien"""
+       
+        if self.stats.ship_left > 0: 
+            # Decrement ship_left
+            self.stats.ship_left -= 1
+            
+            # Get red of any remaining aliens and bullets
+            self.aliens.empty()
+            self.bullets.empty()
+            
+            # Create a new fleet and center the ship
+            self._create_fleet()
+            self.ship.center_ship()
+        else:
+            self.stats.game_active = False
+        
+        # Pause
+        sleep(0.5)
+        
     def _create_fleet(self):
         """Create a fleet of aliens."""
         # Create an alien and find the number of aliens in a row
@@ -150,6 +187,16 @@ class SidewaysShooterPart2:
             if alien.check_edges():
                 self._change_fleet_direction()
                 break
+            
+    def _check_aliens_left(self):
+        """Check if any aliens have reached the left of the screen"""
+        for alien in self.aliens.sprites():
+            if alien in self.aliens.sprites():
+                if alien.rect.left <= 0:
+                    
+                    # Treat this the same as if the ship got hit
+                    self._ship_hit()
+                    break
             
     def _change_fleet_direction(self):
         """Move left the entire fleet and change the fleet's direction"""
