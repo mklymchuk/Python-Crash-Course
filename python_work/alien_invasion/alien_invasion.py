@@ -51,6 +51,21 @@ class AlienInvasion:
                 
             self._update_screen()
             
+    def _start_game(self):
+        """Start and reset game"""
+
+        # Reset the game statistic
+        self.stats.reset_stats()
+        self.stats.game_active = True
+          
+        # Get rid of any remaining aliens and bullets
+        self.aliens.empty()
+        self.bullets.empty()
+          
+        # Create a new fleet and center the ship
+        self._create_fleet()
+        self.ship.center_ship()
+        
     def _check_events(self):
         """Respond to keypresses and mouse events."""
         for event in pygame.event.get():
@@ -62,24 +77,13 @@ class AlienInvasion:
                 self._check_keyup_events(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                self._check_play_button(mouse_pos)
+                self._check_play_button(mouse_pos, event)
                 
-    def _check_play_button(self, mouse_pos):
+    def _check_play_button(self, mouse_pos, event):
         """Start a new game when the player clicks Play"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
-            
-            # Reset the game statistic
-            self.stats.reset_stats()
-            self.stats.game_active = True
-            
-            # Get rid of any remaining aliens and bullets
-            self.aliens.empty()
-            self.bullets.empty()
-            
-            # Create a new fleet and center the ship
-            self._create_fleet()
-            self.ship.center_ship()
+            self._start_game()
             
             # Hide the mouse cursor
             pygame.mouse.set_visible(False)
@@ -94,6 +98,8 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
+        elif event.key == pygame.K_p:
+            self._start_game()
             
     def _check_keyup_events(self, event):
         """Respond to key releases."""
