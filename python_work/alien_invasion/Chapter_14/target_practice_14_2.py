@@ -14,18 +14,20 @@ class TargetPractice:
         pygame.init()
         
         self.settings = Settings()
-        self.ship = Ship(self)
         
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height)
-            )
+        )
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Target practice")
+        
+        self.ship = Ship(self)
         
     def run_game(self):
         """Starts the main loop for the game"""
         while True:
             self._check_events()
+            self.ship.update()
             self._update_screen()
             
             pygame.display.flip()
@@ -43,7 +45,7 @@ class TargetPractice:
         if event.key == pygame.K_UP:
             self.ship.moving_up = True
         elif event.key == pygame.K_DOWN:
-            self.ship.ship_rect.y += 1
+            self.ship.moving_down = True
                             
     def _update_screen(self):
         """Update screen"""
