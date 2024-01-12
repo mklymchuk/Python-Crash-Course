@@ -4,6 +4,7 @@ import pygame
 
 from target_practice_14_2_settings import Settings
 from target_practice_14_2_ship import Ship
+from target_practice_14_2_target import Target
 
 class TargetPractice:
     """A target practice game, where a player shoots a rectangle, and if he 
@@ -23,11 +24,14 @@ class TargetPractice:
         
         self.ship = Ship(self)
         
+        self.target = Target(self)
+        
     def run_game(self):
         """Starts the main loop for the game"""
         while True:
             self._check_events()
             self.ship.update()
+            self.target.move_target()
             self._update_screen()
             
             pygame.display.flip()
@@ -60,6 +64,8 @@ class TargetPractice:
         """Update screen"""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
+        self.target.draw_target()
+        
             
 if __name__ == '__main__':
     """Making an instance of Target Practice"""

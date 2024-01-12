@@ -17,7 +17,10 @@ class Ship:
         self.ship_rect = self.ship.get_rect()
         
         # Start each new ship from the left side mid position of the screen
-        self.ship_rect.midleft = self.screen_rect.midleft
+        self.ship_rect.midleft = (
+            self.screen_rect.midleft[0] + self.settings.screen_margin,
+            self.screen_rect.midleft[1]
+            )
         
         # Store a decimal value for the ship's vertical position
         self.y = float(self.ship_rect.y)
