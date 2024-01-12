@@ -39,14 +39,23 @@ class TargetPractice:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
+            elif event.type == pygame.KEYUP:
+                self._check_keyup_events(event)
     
     def _check_keydown_events(self, event):
-        """Check if any key pressed"""
+        """Respond to keypresses"""
         if event.key == pygame.K_UP:
             self.ship.moving_up = True
         elif event.key == pygame.K_DOWN:
             self.ship.moving_down = True
                             
+    def _check_keyup_events(self, event):
+        """Respond to keyreleases"""
+        if event.key == pygame.K_UP:
+            self.ship.moving_up = False
+        elif event.key == pygame.K_DOWN:
+            self.ship.moving_down = False
+            
     def _update_screen(self):
         """Update screen"""
         self.screen.fill(self.settings.bg_color)

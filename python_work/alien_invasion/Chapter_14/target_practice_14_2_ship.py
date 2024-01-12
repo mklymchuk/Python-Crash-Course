@@ -29,11 +29,14 @@ class Ship:
     def update(self):
         """Update ship's position based on the movement flags"""
         # Update the ship y value, not the rect
-        if self.moving_up and self.ship_rect.top < 0:
-            self.ship_rect.y -= self.settings.ship_speed
-        if self.moving_down and self.ship_rect.bottom > self.screen_rect.bottom:
-            self.ship_rect.y += self.settings.ship_speed
-            
+        if self.moving_up and self.y > 0:
+            self.y -= self.settings.ship_speed
+        if self.moving_down and self.y < self.screen_rect.bottom - self.ship_rect.height:
+            self.y += self.settings.ship_speed
+        
+        # Update the rect based on the y value
+        self.ship_rect.y = int(self.y)
+
     def blitme(self):
         """Draw the ship at its current location"""
         self.screen.blit(self.ship, self.ship_rect)
