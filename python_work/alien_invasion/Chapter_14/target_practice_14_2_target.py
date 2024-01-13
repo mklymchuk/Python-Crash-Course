@@ -21,9 +21,6 @@ class Target:
         # Store target exact position 
         self.y = float(self.target_rect.y)
         
-        # Set the initial movement direction
-        self.direction = 1
-        
     def draw_target(self):
         """Draw target"""
         self.screen.fill(self.settings.rect_color, self.target_rect)
@@ -31,7 +28,7 @@ class Target:
     def move_target(self):
         """Move target up and down"""
         # Update target position based on the direction and speed 
-        self.y += self.direction * self.settings.target_speed
+        self.y += self.settings.target_direction * self.settings.target_speed
         
         # Update the rect based on value
         self.target_rect.y = int(self.y)
@@ -40,4 +37,4 @@ class Target:
         if self.target_rect.top <= 0 or self.target_rect.bottom >= self.screen_rect.bottom:
             
             # Reverse the direction of movement 
-            self.direction *= -1
+            self.settings.target_direction *= -1

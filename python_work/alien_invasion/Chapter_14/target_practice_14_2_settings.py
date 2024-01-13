@@ -9,7 +9,7 @@ class Settings:
         self.screen_height = 720
         
         # Background color
-        self.bg_color = (224, 255, 255)
+        self.bg_color = (225, 255, 255)
         
         # Margin for target and ship
         self.screen_margin = 20
@@ -17,13 +17,15 @@ class Settings:
         # Ship speed
         self.ship_speed = 1.5
         
-        # Target size
+        # Target settings
         self.rectangle_width, self.rectangle_height = 64, 64
-        
-        # Target color
         self.rect_color = (0, 0, 0)
-        
-        # Target speed
         self.target_speed = 0.1
+        self.target_direction = -1 # -1 top, 1 bottom
+        
+        # Bullet settings
+        self.bullet_width, self.bullet_height = 3, 3
+        self.bullet_speed = 3
+        self.bullet_color = (233, 233, 233)
         
         
