@@ -18,6 +18,7 @@ class Bullet(Sprite):
         self.bullet_rect.midleft = (
             self.screen_rect.midleft[0] + self.settings.screen_margin, 
             self.screen_rect.midleft[1])
+        self.bullet_rect.midright = tp_game.ship.ship_rect.midright
         
         # Store bullet exact position
         self.x = float(self.bullet_rect.x)

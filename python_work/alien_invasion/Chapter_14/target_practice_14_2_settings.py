@@ -24,8 +24,8 @@ class Settings:
         self.target_direction = -1 # -1 top, 1 bottom
         
         # Bullet settings
-        self.bullet_width, self.bullet_height = 3, 3
+        self.bullet_width, self.bullet_height = 15, 3
         self.bullet_speed = 3
-        self.bullet_color = (233, 233, 233)
+        self.bullet_color = (255, 0, 0)
         
         

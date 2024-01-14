@@ -56,6 +56,10 @@ class TargetPractice:
             self.ship.moving_up = True
         elif event.key == pygame.K_DOWN:
             self.ship.moving_down = True
+        elif event.key == pygame.K_q:
+            sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self.fire_bullet()
                             
     def _check_keyup_events(self, event):
         """Respond to keyreleases"""
@@ -63,12 +67,21 @@ class TargetPractice:
             self.ship.moving_up = False
         elif event.key == pygame.K_DOWN:
             self.ship.moving_down = False
+    
+    def fire_bullet(self):
+        """Create a new bullet, and add it to the group"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
             
     def _update_screen(self):
         """Update screen"""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
-        self.target.draw_target()        
+        self.target.draw_target()       
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet() 
+            
+        pygame.display.flip()
             
 if __name__ == '__main__':
     """Making an instance of Target Practice"""
