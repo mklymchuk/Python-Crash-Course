@@ -34,6 +34,7 @@ class TargetPractice:
         while True:
             self._check_events()
             self.ship.update()
+            self._update_bullets()
             self.target.move_target()
             self.bullets.update()
             self._update_screen()
@@ -72,6 +73,15 @@ class TargetPractice:
         """Create a new bullet, and add it to the group"""
         new_bullet = Bullet(self)
         self.bullets.add(new_bullet)
+        
+    def _update_bullets(self):
+        """Update position of bullets and get rid of old bullets"""
+        self.bullets.update()
+            
+        # Get rid of old bullets
+        for bullet in self.bullets.copy():
+            if bullet.bullet_rect.left >= self.screen_rect.right:
+                self.bullets.remove(bullet)
             
     def _update_screen(self):
         """Update screen"""
