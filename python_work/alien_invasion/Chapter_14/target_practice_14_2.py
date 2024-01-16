@@ -4,6 +4,7 @@ import pygame
 
 from target_practice_14_2_settings import Settings
 from target_practice_14_2_ship import Ship
+from target_practice_14_2_button import Button
 from target_practice_14_2_target import Target
 from target_practice_14_2_bullet import Bullet
 
@@ -28,6 +29,9 @@ class TargetPractice:
         self.target = Target(self)
         
         self.bullets = pygame.sprite.Group()
+        
+        # Make the play button
+        self.play_button = Button(self, "Play")
         
     def run_game(self):
         """Starts the main loop for the game"""
@@ -89,7 +93,9 @@ class TargetPractice:
         self.ship.blitme()
         self.target.draw_target()       
         for bullet in self.bullets.sprites():
-            bullet.draw_bullet() 
+            bullet.draw_bullet()
+        
+        self.play_button.draw_button(self)
             
         pygame.display.flip()
             

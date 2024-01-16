@@ -28,4 +28,8 @@ class Settings:
         self.bullet_speed = 3
         self.bullet_color = (255, 0, 0)
         
+        # Play Button settings
+        self.width, self.height = 200, 50
+        self.button_color = (0, 255, 0)
+        self.text_color = (255, 255, 255)        
         
