@@ -1,10 +1,12 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Target:
+class Target(Sprite):
     """Target for target practice"""
     
     def __init__(self, tp_game):
         """Target initialization"""
+        super().__init__()
         self.screen = tp_game.screen
         self.settings = tp_game.settings
         self.screen_rect = tp_game.screen.get_rect()

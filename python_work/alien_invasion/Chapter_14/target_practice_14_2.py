@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from target_practice_14_2_settings import Settings
+from target_practice_14_2_game_stats import GameStats
 from target_practice_14_2_ship import Ship
 from target_practice_14_2_button import Button
 from target_practice_14_2_target import Target
@@ -17,6 +18,7 @@ class TargetPractice:
         pygame.init()
         
         self.settings = Settings()
+        self.stats = GameStats(self)
         
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height)
@@ -26,8 +28,7 @@ class TargetPractice:
         
         self.ship = Ship(self)
         
-        self.target = Target(self)
-        
+        self.target = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         
         # Make the play button
@@ -54,7 +55,23 @@ class TargetPractice:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
-    
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+                
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Play"""
+        if self.play_button.button_rect.collidepoint(mouse_pos):
+            #Reset the game statistics
+            self.stats.reset_stats()
+            self.stats.game_active = True
+
+            #Get rid of any remaining aliens and bullets
+            self.bullets.empty()
+            
+            # Center ship
+            self.ship.center_ship()
+            
     def _check_keydown_events(self, event):
         """Respond to keypresses"""
         if event.key == pygame.K_UP:
