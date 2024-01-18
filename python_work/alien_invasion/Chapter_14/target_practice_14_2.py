@@ -39,14 +39,20 @@ class TargetPractice:
         # Make the play button
         self.play_button = Button(self, "Play")
         
+        # Start target practice game in active state
+        self.game_active = True
+        
     def run_game(self):
         """Starts the main loop for the game"""
         while True:
             self._check_events()
-            self.ship.update()
-            self._update_bullets()
-            self.target.sprites()[0].move_target()
-            self.bullets.update()
+            
+            if self.stats.game_active:
+                self.ship.update()
+                self._update_bullets()
+                self.target.sprites()[0].move_target()
+                self.bullets.update()
+            
             self._update_screen()
             
             pygame.display.flip()
@@ -75,7 +81,7 @@ class TargetPractice:
             self.bullets.empty()
             
             # Center ship
-            # self.ship.center_ship()
+            self.ship.center_ship()
             
     def _check_keydown_events(self, event):
         """Respond to keypresses"""
@@ -108,6 +114,25 @@ class TargetPractice:
         for bullet in self.bullets.copy():
             if bullet.rect.left >= self.screen_rect.right:
                 self.bullets.remove(bullet)
+                self._update_player_life()
+                print(self.settings.players_life)
+                
+    def _update_player_life(self):
+        """Check if bullet misses the target, and update player life"""
+        if self.settings.players_life > 0:
+            # Decrement player's life
+            self.settings.players_life -= 1
+
+            # Get rid of bullets
+            self.bullets.empty()
+
+            # Center the ship
+            self.ship.center_ship()
+        else:
+            self.stats.game_active = False
+
+        # Pause
+        sleep(0.5)
             
     def _update_screen(self):
         """Update screen"""
@@ -116,11 +141,6 @@ class TargetPractice:
         self.target.sprites()[0].draw_target()       
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
-        
-        # Look for bullet-target collision
-        if pygame.sprite.spritecollideany(self.target.sprites()[0], self.bullets):
-            print("Target hit")
-        
         self.play_button.draw_button(self)
             
         pygame.display.flip()
