@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 
 import pygame
 
@@ -31,6 +32,10 @@ class TargetPractice:
         self.target = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         
+        # Create an instance of the Target class and add it to the target group
+        target = Target(self)
+        self.target.add(target)
+        
         # Make the play button
         self.play_button = Button(self, "Play")
         
@@ -40,7 +45,7 @@ class TargetPractice:
             self._check_events()
             self.ship.update()
             self._update_bullets()
-            self.target.move_target()
+            self.target.sprites()[0].move_target()
             self.bullets.update()
             self._update_screen()
             
@@ -70,7 +75,7 @@ class TargetPractice:
             self.bullets.empty()
             
             # Center ship
-            self.ship.center_ship()
+            # self.ship.center_ship()
             
     def _check_keydown_events(self, event):
         """Respond to keypresses"""
@@ -101,16 +106,20 @@ class TargetPractice:
             
         # Get rid of old bullets
         for bullet in self.bullets.copy():
-            if bullet.bullet_rect.left >= self.screen_rect.right:
+            if bullet.rect.left >= self.screen_rect.right:
                 self.bullets.remove(bullet)
             
     def _update_screen(self):
         """Update screen"""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
-        self.target.draw_target()       
+        self.target.sprites()[0].draw_target()       
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        
+        # Look for bullet-target collision
+        if pygame.sprite.spritecollideany(self.target.sprites()[0], self.bullets):
+            print("Target hit")
         
         self.play_button.draw_button(self)
             

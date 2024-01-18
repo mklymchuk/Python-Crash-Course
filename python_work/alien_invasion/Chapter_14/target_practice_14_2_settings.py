@@ -31,5 +31,8 @@ class Settings:
         # Play Button settings
         self.width, self.height = 200, 50
         self.button_color = (0, 255, 0)
-        self.text_color = (255, 255, 255)        
+        self.text_color = (255, 255, 255)       
+        
+        # Players life
+        self.players_life = 3 
         
