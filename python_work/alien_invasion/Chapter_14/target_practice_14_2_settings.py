@@ -36,3 +36,16 @@ class Settings:
         # Players life
         self.players_life = 3 
         
+        # How quicly game speeds up
+        self.speed_up_scale = 1.1
+        
+        # Collision counting
+        self.bullet_collide = 0
+        
+    def target_increase_speed(self):
+        """Increase target speed when ten bullets hit the target"""
+        self.target_speed *= self.speed_up_scale
+        
+    def reset_game_speed(self):
+        # Reset game speed every time when player press play button
+        self.target_speed = 0.1

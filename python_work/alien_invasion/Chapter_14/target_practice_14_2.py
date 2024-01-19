@@ -70,6 +70,7 @@ class TargetPractice:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                self.settings.reset_game_speed()
                 
     def _check_play_button(self, mouse_pos):
         """Start a new game when the player clicks Play"""
@@ -114,12 +115,17 @@ class TargetPractice:
         
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets"""
-        self.bullets.update()
+        self.bullets.update() 
             
         # Get rid of old bullets
         for bullet in self.bullets.copy():
             if pygame.sprite.spritecollideany(self.target.sprites()[0], self.bullets):
                 self.bullets.remove(bullet)
+                self.settings.bullet_collide += 1
+                print(self.settings.bullet_collide)
+                if self.settings.bullet_collide >= 10:
+                    self.settings.target_increase_speed()
+                    self.settings.bullet_collide = 0
             if bullet.rect.left >= self.screen_rect.right:
                 self.bullets.remove(bullet)
                 self._update_player_life()
