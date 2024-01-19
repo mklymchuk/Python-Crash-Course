@@ -39,8 +39,9 @@ class TargetPractice:
         # Make the play button
         self.play_button = Button(self, "Play")
         
-        # Start target practice game in active state
-        self.game_active = True
+        # Start target practice game in false state
+        self.game_active = False
+        pygame.mouse.set_visible(True)
         
     def run_game(self):
         """Starts the main loop for the game"""
@@ -72,9 +73,11 @@ class TargetPractice:
                 
     def _check_play_button(self, mouse_pos):
         """Start a new game when the player clicks Play"""
-        if self.play_button.button_rect.collidepoint(mouse_pos):
+        button_clicked = self.play_button.button_rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
             #Reset the game statistics
             self.stats.reset_stats()
+            self.settings.players_life = 3
             self.stats.game_active = True
 
             #Get rid of any remaining aliens and bullets
@@ -82,6 +85,9 @@ class TargetPractice:
             
             # Center ship
             self.ship.center_ship()
+            
+            # Hide the mouse cursor
+            pygame.mouse.set_visible(False)
             
     def _check_keydown_events(self, event):
         """Respond to keypresses"""
@@ -112,10 +118,11 @@ class TargetPractice:
             
         # Get rid of old bullets
         for bullet in self.bullets.copy():
+            if pygame.sprite.spritecollideany(self.target.sprites()[0], self.bullets):
+                self.bullets.remove(bullet)
             if bullet.rect.left >= self.screen_rect.right:
                 self.bullets.remove(bullet)
                 self._update_player_life()
-                print(self.settings.players_life)
                 
     def _update_player_life(self):
         """Check if bullet misses the target, and update player life"""
@@ -123,13 +130,11 @@ class TargetPractice:
             # Decrement player's life
             self.settings.players_life -= 1
 
-            # Get rid of bullets
-            self.bullets.empty()
-
             # Center the ship
             self.ship.center_ship()
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
         # Pause
         sleep(0.5)
@@ -141,7 +146,10 @@ class TargetPractice:
         self.target.sprites()[0].draw_target()       
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
-        self.play_button.draw_button(self)
+            
+        # Draw the play button only if the game is not active
+        if not self.stats.game_active:
+            self.play_button.draw_button(self)
             
         pygame.display.flip()
             
