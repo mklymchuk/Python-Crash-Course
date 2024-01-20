@@ -47,4 +47,15 @@ class Settings:
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
-            
+        
+    def easy_difficulty(self):
+        """Difficulty with 0.5 speed"""
+        self.ship_speed = 1.5 * 0.5
+        self.bullet_speed = 3.0 * 0.5
+        self.alien_speed = 1.0 * 0.5
+        
+    def hard_difficulty(self):
+        """Difficulty with 2x speed"""
+        self.ship_speed *= 2
+        self.bullet_speed *= 2
+        self.alien_speed *= 2
