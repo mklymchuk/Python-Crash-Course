@@ -90,39 +90,36 @@ class AlienInvasion:
                 self._check_easty_difficulty_button(mouse_pos, event)
                 self._check_hard_difficulty_button(mouse_pos, event)
                 
+    def _start_new_game(self):
+        """Start a new game."""
+        self._start_game()
+        self.stats.reset_stats()
+        self.stats.game_active = True
+        self.sb.prep_score()
+
+        # Hide the mouse cursor
+        pygame.mouse.set_visible(False)
+                
     def _check_easty_difficulty_button(self, mouse_pos, event):
         """Star a new game with easy difficulty"""
         button_clicked = self.easy_difficulty_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
             self.settings.easy_difficulty()
-            self._start_game()
-            self.stats.reset_stats()
-            self.stats.game_active = True
-            self.sb.prep_score()
+            self._start_new_game()
             
     def _check_hard_difficulty_button(self, mouse_pos, event):
         """Star a new game with easy difficulty"""
         button_clicked = self.hard_difficulty_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
             self.settings.hard_difficulty()
-            self._start_game()
-            self.stats.reset_stats()
-            self.stats.game_active = True
-            self.sb.prep_score()
+            self._start_new_game()
                 
     def _check_play_button(self, mouse_pos, event):
         """Start a new game when the player clicks Play"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
-            # Reset the game settings
             self.settings.initialize_dynamic_settings()
-            self._start_game()
-            self.stats.reset_stats()
-            self.stats.game_active = True
-            self.sb.prep_score()
-            
-            # Hide the mouse cursor
-            pygame.mouse.set_visible(False)
+            self._start_new_game()
                 
     def _check_keydown_events(self, event):
         """Respond keypresses."""
