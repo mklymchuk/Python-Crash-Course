@@ -75,10 +75,17 @@ class AlienInvasion:
         self._create_fleet()
         self.ship.center_ship()
         
+    def _save_high_score(self):
+        """Write player high score into a file highscores.txt"""
+        with open('python_work/alien_invasion/highscores.txt', 'w') as file:
+            file.write(str(self.stats.high_score))
+            file.close()
+
     def _check_events(self):
         """Respond to keypresses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self._save_high_score()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                   self._check_keydown_events(event)
@@ -130,6 +137,7 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
+            self._save_high_score()
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
