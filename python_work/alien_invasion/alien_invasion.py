@@ -6,6 +6,7 @@ import pygame
 from settings import Settings
 from game_stats import GameStats
 from scoreboard import Scoreboard
+from music_and_sound import MusicAndSound
 from button import Button
 from ship import Ship
 from bullet import Bullet
@@ -28,6 +29,7 @@ class AlienInvasion:
         # Create an instance to store game statistics, and create scoreboard
         self.stats = GameStats(self)
         self.sb = Scoreboard(self)
+        self.sounds = MusicAndSound()
         
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -38,21 +40,18 @@ class AlienInvasion:
         # Set the background color.
         self.bg_color = (230, 230, 230)
         
-        # Make the Play button
-        screen_center_x = self.settings.screen_width // 2
-        screen_center_y = self.settings.screen_height // 2
-        self.play_button = Button(self, "Play", screen_center_x - 100, screen_center_y - 150)
-        
-        # Make difficulty buttons
-        self.easy_difficulty_button = Button(self, "Easy", screen_center_x - 100, screen_center_y - 25)
-        self.hard_difficulty_button = Button(self, "Hard", screen_center_x - 100, screen_center_y + 100)
+        self.buttons_initialization()
         
     def run_game(self):
         """Start the main loop for the game."""
+        # Play game theme
+        self.sounds.play_background_music()
+        
         while True:
             self._check_events()
-            
+                
             if self.stats.game_active:
+                self.sounds.unload_background_music()
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
@@ -62,7 +61,7 @@ class AlienInvasion:
             
     def _start_game(self):
         """Start and reset game"""
-
+        
         # Reset the game statistic
         self.stats.reset_stats()
         self.stats.game_active = True
@@ -75,6 +74,17 @@ class AlienInvasion:
         self._create_fleet()
         self.ship.center_ship()
         
+    def buttons_initialization(self):
+        """Button initialization"""
+        # Make the Play button
+        screen_center_x = self.settings.screen_width // 2
+        screen_center_y = self.settings.screen_height // 2
+        self.play_button = Button(self, "Play", screen_center_x - 100, screen_center_y - 150)
+        
+        # Make difficulty buttons
+        self.easy_difficulty_button = Button(self, "Easy", screen_center_x - 100, screen_center_y - 25)
+        self.hard_difficulty_button = Button(self, "Hard", screen_center_x - 100, screen_center_y + 100)
+        
     def _save_high_score(self):
         """Write player high score into a file highscores.txt"""
         with open('python_work/alien_invasion/highscores.txt', 'w') as file:
@@ -86,6 +96,8 @@ class AlienInvasion:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self._save_high_score()
+                self.sounds.play_quit_sound()
+                sleep(0.5)
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                   self._check_keydown_events(event)
@@ -113,6 +125,8 @@ class AlienInvasion:
         """Star a new game with easy difficulty"""
         button_clicked = self.easy_difficulty_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            # Play sound of button clicked
+            self.sounds.press_button_sound()
             self.settings.easy_difficulty()
             self._start_new_game()
             
@@ -120,6 +134,8 @@ class AlienInvasion:
         """Star a new game with easy difficulty"""
         button_clicked = self.hard_difficulty_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            # Play sound of button clicked
+            self.sounds.press_button_sound()
             self.settings.hard_difficulty()
             self._start_new_game()
                 
@@ -127,6 +143,8 @@ class AlienInvasion:
         """Start a new game when the player clicks Play"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            # Play sound of button clicked
+            self.sounds.press_button_sound()
             self.settings.initialize_dynamic_settings()
             self._start_new_game()
                 
@@ -138,6 +156,8 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             self._save_high_score()
+            self.sounds.play_quit_sound()
+            sleep(0.5)
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -189,6 +209,7 @@ class AlienInvasion:
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
         if collisions:
             for aliens in collisions.values():
+                self.sounds.bullet_hit_aliens()
                 self.stats.score += self.settings.alien_points * len(aliens)
                 self.sb.prep_score()
                 self.sb.check_high_score()
@@ -214,6 +235,9 @@ class AlienInvasion:
             # Decrement ships_left, and update scoreboard
             self.stats.ship_left -= 1
             self.sb.prep_ships()
+            
+            # Play sound of collision
+            self.sounds.play_collision_sound()
             
             # Get rid of any remaining aliens and bullets
             self.aliens.empty()
@@ -278,6 +302,9 @@ class AlienInvasion:
             if alien.rect.bottom >= screen_rect.bottom:
                 # Treat this the same as if the ship got hit
                 self._ship_hit()
+                
+                #Play sound of collision
+                self.sounds.play_collision_sound()
                 break
                 
     def _update_screen(self):
