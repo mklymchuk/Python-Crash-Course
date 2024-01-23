@@ -20,5 +20,5 @@ class GameStats:
         
     def _read_high_score(self):
         """Read high score from file"""
-        with open('python_work/Project_1_alien_invasion/highscores.txt') as file:
+        with open('python_work/alien_invasion/highscores.txt') as file:
             return int(file.read())

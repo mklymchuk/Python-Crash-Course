@@ -87,7 +87,7 @@ class AlienInvasion:
         
     def _save_high_score(self):
         """Write player high score into a file highscores.txt"""
-        with open('python_work/Project_1_alien_invasion/highscores.txt', 'w') as file:
+        with open('python_work/alien_invasion/highscores.txt', 'w') as file:
             file.write(str(self.stats.high_score))
             file.close()
 
