@@ -5,6 +5,7 @@ import pygame
 
 from sideways_shooter_part_2_settings import SidewaysShooterPart2Settings
 from sideways_shooter_part_2_game_stats import GameStats
+from sideways_shooter_part_2_button import Button
 from sideways_shooter_part2_ship import Ship
 from sideways_shooter_part_2_bullet import Bullet
 from sideways_shooter_part_2_alien import Alien
@@ -45,6 +46,9 @@ class SidewaysShooterPart2:
         self.clock = pygame.time.Clock()
         self.target_fps = 120
         
+        # Make the play button
+        self.play_button = Button(self, "Play")
+        
     def run_game(self):
         """Main loop where game runs"""
         while True:
@@ -68,8 +72,36 @@ class SidewaysShooterPart2:
                 elif event.type == pygame.KEYDOWN:
                     self._check_keydown_events(event)
                 elif event.type == pygame.KEYUP:
-                    self._check_keyup_events(event)                    
+                    self._check_keyup_events(event)
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = pygame.mouse.get_pos()
+                    self._check_play_button(mouse_pos)                    
                     
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Play"""
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
+            # Reset the game settings
+            self.settings.initialize_dynamic_settings()
+            self._start_game()
+            
+    def _start_game(self):
+        """Start a new game"""
+        # Reset the game statistics
+        self.stats.reset_stats()
+        self.stats.game_active = True
+            
+        # Get rid of any remaining aliens and bullets
+        self.aliens.empty()
+        self.bullets.empty()
+            
+        # Create a new fleet and center the ship
+        self._create_fleet()
+        self.ship.center_ship()
+            
+        # Hide the mouse cursor
+        pygame.mouse.set_visible(False)
+            
     def _check_keydown_events(self, event):
         """Respond to keypresses"""
         if event.key == pygame.K_DOWN:
@@ -80,6 +112,8 @@ class SidewaysShooterPart2:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self.fire_bullet()
+        elif event.key == pygame.K_p:
+            self._start_game()
     
     def _check_keyup_events(self, event):
         """Respond to key releases"""
@@ -115,6 +149,7 @@ class SidewaysShooterPart2:
             # Destroy existing bullets and create new fleet
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
         
     def _update_aliens(self):
         """Check if the fleet is at an edge, then update positions of all
@@ -145,6 +180,7 @@ class SidewaysShooterPart2:
             self.ship.center_ship()
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
         
         # Pause
         sleep(0.5)
@@ -212,6 +248,10 @@ class SidewaysShooterPart2:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+        
+        # Draw the play button if the game is inactive
+        if not self.stats.game_active:
+            self.play_button.draw_button()
               
         # Make display visible        
         pygame.display.flip()
