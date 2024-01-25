@@ -81,10 +81,18 @@ class SidewaysShooterPart2:
             self, "Hard", screen_center_x - 100, screen_center_y + 100
             )
         
+    def _save_high_score(self):
+        """Write player high score into a file highscores.txt"""
+        with open('python_work/alien_invasion/Chapter_13/ss_game_highscores.txt', 'w') as file:
+            file.write(str(self.stats.high_score))
+            file.close()
+            
     def _check_events(self):
         """Respond to keypresses and mouse events."""
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    self._save_high_score()
+                    sleep(0.5)
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     self._check_keydown_events(event)
@@ -128,6 +136,9 @@ class SidewaysShooterPart2:
         # Reset the game statistics
         self.stats.reset_stats()
         self.stats.game_active = True
+        self.sb.prep_score()
+        self.sb.prep_level()
+        self.sb.prep_ships()
             
         # Get rid of any remaining aliens and bullets
         self.aliens.empty()
@@ -147,6 +158,8 @@ class SidewaysShooterPart2:
         elif event.key == pygame.K_UP:
             self.ship.moving_up = True
         elif event.key == pygame.K_q:
+            self._save_high_score()
+            sleep(0.5)
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self.fire_bullet()
@@ -181,13 +194,26 @@ class SidewaysShooterPart2:
     def _check_bullet_alien_collisions(self):
         """Respond to bullet-alien collisions."""
         # Remove any bullets and aliens that have collided.
-        collision = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
         
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+            self.sb.prep_score()
+            self.sb.check_high_score()
         if not self.aliens:
-            # Destroy existing bullets and create new fleet
-            self.bullets.empty()
-            self._create_fleet()
-            self.settings.increase_speed()
+            self._start_new_level()
+            
+    def _start_new_level(self):
+        """Start new level if fleet destroyed"""
+        # Destroy existing bullets and create new fleet
+        self.bullets.empty()
+        self._create_fleet()
+        self.settings.increase_speed()
+            
+        # Increase level
+        self.stats.level += 1
+        self.sb.prep_level()
         
     def _update_aliens(self):
         """Check if the fleet is at an edge, then update positions of all
@@ -206,8 +232,9 @@ class SidewaysShooterPart2:
         """Respond to the ship being hit by an alien"""
        
         if self.stats.ship_left > 0: 
-            # Decrement ship_left
+            # Decrement ship_left, and update scoreboard
             self.stats.ship_left -= 1
+            self.sb.prep_ships()
             
             # Get red of any remaining aliens and bullets
             self.aliens.empty()

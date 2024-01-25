@@ -1,19 +1,21 @@
 import pygame
+from pygame.sprite import Sprite
 
 SHIP_IMAGE = 'python_work/alien_invasion/images/sidewaysshotership.bmp'
 
-class Ship:
+class Ship(Sprite):
     """A class to manage the ship"""
 
     def __init__(self, ss_game):
         """Ship and start position initialization"""
+        super().__init__()
         self.screen = ss_game.screen
         self.screen_rect = ss_game.screen.get_rect()
         self.settings = ss_game.settings
         
         # Load image of the ship
-        self.ship = pygame.image.load(SHIP_IMAGE)
-        self.rect = self.ship.get_rect()
+        self.image = pygame.image.load(SHIP_IMAGE)
+        self.rect = self.image.get_rect()
         
         # Start each new ship at the bottom in the left corner
         self.rect.midleft = self.screen_rect.midleft
@@ -38,7 +40,7 @@ class Ship:
                 
     def blitme(self):
         """Draw the ship at its current location"""
-        self.screen.blit(self.ship, self.rect)
+        self.screen.blit(self.image, self.rect)
         
     def center_ship(self):
         """Center the ship on the screen"""
