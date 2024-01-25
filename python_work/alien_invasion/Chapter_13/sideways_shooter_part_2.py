@@ -5,6 +5,7 @@ import pygame
 
 from sideways_shooter_part_2_settings import SidewaysShooterPart2Settings
 from sideways_shooter_part_2_game_stats import GameStats
+from sideways_shooter_part_2_scoreboard import Scoreboard
 from sideways_shooter_part_2_button import Button
 from sideways_shooter_part2_ship import Ship
 from sideways_shooter_part_2_bullet import Bullet
@@ -33,8 +34,9 @@ class SidewaysShooterPart2:
         
         pygame.display.set_caption("Sideway Shooter part 2")
         
-        # Create an instance to store game statistics
+        # Create an instance to store game statistics, and create scoreboard
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
         
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -46,8 +48,7 @@ class SidewaysShooterPart2:
         self.clock = pygame.time.Clock()
         self.target_fps = 120
         
-        # Make the play button
-        self.play_button = Button(self, "Play")
+        self.buttons_initialization()
         
     def run_game(self):
         """Main loop where game runs"""
@@ -64,6 +65,22 @@ class SidewaysShooterPart2:
         # Cap the frame rate to the target FPS
             self.clock.tick(self.target_fps)
             
+    def buttons_initialization(self):
+        """Button initialization"""
+        # Make the play button
+        screen_center_x = self.settings.screen_width // 2
+        screen_center_y = self.settings.screen_height // 2
+        self.play_button = Button(
+            self, "Play", screen_center_x - 100, screen_center_y - 150
+            )
+        # Make difficulty buttons
+        self.easy_difficulty_button = Button(
+            self, "Easy", screen_center_x - 100, screen_center_y - 25
+            )
+        self.hard_difficulty_button = Button(
+            self, "Hard", screen_center_x - 100, screen_center_y + 100
+            )
+        
     def _check_events(self):
         """Respond to keypresses and mouse events."""
         for event in pygame.event.get():
@@ -75,14 +92,35 @@ class SidewaysShooterPart2:
                     self._check_keyup_events(event)
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
-                    self._check_play_button(mouse_pos)                    
+                    self._check_play_button(mouse_pos, event)     
+                    self._check_easy_difficulty_button(mouse_pos, event)
+                    self._check_hard_difficulty_button(mouse_pos, event)               
                     
-    def _check_play_button(self, mouse_pos):
+    def _check_play_button(self, mouse_pos, event):
         """Start a new game when the player clicks Play"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
             # Reset the game settings
+            # self.sounds.press_button_sound()
             self.settings.initialize_dynamic_settings()
+            self._start_game()
+            
+    def _check_easy_difficulty_button(self, mouse_pos, event):
+        """Star a new game with easy difficulty"""
+        button_clicked = self.easy_difficulty_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
+            # Play sound of button clicked
+            # self.sounds.press_button_sound()
+            self.settings.easy_difficulty()
+            self._start_game()
+            
+    def _check_hard_difficulty_button(self, mouse_pos, event):
+        """Star a new game with easy difficulty"""
+        button_clicked = self.hard_difficulty_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
+            # Play sound of button clicked
+            # self.sounds.press_button_sound()
+            self.settings.hard_difficulty()
             self._start_game()
             
     def _start_game(self):
@@ -249,9 +287,14 @@ class SidewaysShooterPart2:
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
         
+        # Draw the score information
+        self.sb.show_score()
+        
         # Draw the play button if the game is inactive
         if not self.stats.game_active:
             self.play_button.draw_button()
+            self.easy_difficulty_button.draw_button()
+            self.hard_difficulty_button.draw_button()
               
         # Make display visible        
         pygame.display.flip()

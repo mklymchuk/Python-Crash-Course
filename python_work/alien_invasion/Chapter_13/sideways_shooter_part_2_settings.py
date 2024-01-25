@@ -27,6 +27,12 @@ class SidewaysShooterPart2Settings:
         
         self.initialize_dynamic_settings()
         
+        # Easy settings speed modifyer
+        self.easy_difficulty_speed_modifyer = 0.5
+        
+        # Hard settings speed modifyer
+        self.hard_difficulty_speed_modifyer = 2
+        
     def initialize_dynamic_settings(self):
         """Initialize settings that change throughout the game"""
         self.ship_speed = 1.5
@@ -41,4 +47,28 @@ class SidewaysShooterPart2Settings:
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+        
+    def easy_difficulty(self):
+        """Difficulty with 0.5 speed"""
+        self.ship_speed = 1.5 * self.easy_difficulty_speed_modifyer
+        self.bullet_speed = 3.0 * self.easy_difficulty_speed_modifyer
+        self.alien_speed = 1.0 * self.easy_difficulty_speed_modifyer
+        
+        # fleet_direction of 1 represent right; -1 represent left
+        self.fleet_direction = 1
+        
+        # Scoring
+        self.alien_points = 50
+        
+    def hard_difficulty(self):
+        """Difficulty with 2x speed"""
+        self.ship_speed = 1.5 * self.hard_difficulty_speed_modifyer
+        self.bullet_speed = 3.0 * self.hard_difficulty_speed_modifyer
+        self.alien_speed = 1.0 * self.hard_difficulty_speed_modifyer
+        
+        # fleet_direction of 1 represent right; -1 represent left
+        self.fleet_direction = 1
+        
+        # Scoring
+        self.alien_points = 50
         

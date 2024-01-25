@@ -79,11 +79,17 @@ class AlienInvasion:
         # Make the Play button
         screen_center_x = self.settings.screen_width // 2
         screen_center_y = self.settings.screen_height // 2
-        self.play_button = Button(self, "Play", screen_center_x - 100, screen_center_y - 150)
+        self.play_button = Button(
+            self, "Play", screen_center_x - 100, screen_center_y - 150
+            )
         
         # Make difficulty buttons
-        self.easy_difficulty_button = Button(self, "Easy", screen_center_x - 100, screen_center_y - 25)
-        self.hard_difficulty_button = Button(self, "Hard", screen_center_x - 100, screen_center_y + 100)
+        self.easy_difficulty_button = Button(
+            self, "Easy", screen_center_x - 100, screen_center_y - 25
+            )
+        self.hard_difficulty_button = Button(
+            self, "Hard", screen_center_x - 100, screen_center_y + 100
+            )
         
     def _save_high_score(self):
         """Write player high score into a file highscores.txt"""
@@ -106,7 +112,7 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos, event)
-                self._check_easty_difficulty_button(mouse_pos, event)
+                self._check_easy_difficulty_button(mouse_pos, event)
                 self._check_hard_difficulty_button(mouse_pos, event)
                 
     def _start_new_game(self):
@@ -121,7 +127,7 @@ class AlienInvasion:
         # Hide the mouse cursor
         pygame.mouse.set_visible(False)
                 
-    def _check_easty_difficulty_button(self, mouse_pos, event):
+    def _check_easy_difficulty_button(self, mouse_pos, event):
         """Star a new game with easy difficulty"""
         button_clicked = self.easy_difficulty_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
