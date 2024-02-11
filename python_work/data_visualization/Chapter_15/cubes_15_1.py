@@ -7,8 +7,6 @@ plt.style.use('_classic_test_patch')
 fig, ax = plt.subplots()
 ax.scatter(x_values, y_values, c = y_values, cmap = plt.cm.Blues, s = 10) #type: ignore
 
-ax.plot(x_values, y_values, linewidth = 3)
-
 # Set chart title and lable axes.
 ax.set_title("Cubic numbers", fontsize = 24)
 ax.set_xlabel("Value", fontsize = 14)
