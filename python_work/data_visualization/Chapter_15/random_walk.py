@@ -36,3 +36,6 @@ class RandomWalk:
             self.x_values.append(x)
             self.y_values.append(y)
             
+    def get_step(self):
+        """Determination of direction and distance for each step"""
+            
