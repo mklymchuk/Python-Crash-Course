@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
-import plotly.express as px
+import plotly.graph_objects as go
+
 from die import Die
+from random_walk import RandomWalk
 
 # Create a die
 die_1 = Die()
@@ -32,3 +34,9 @@ ax.set_xlabel("Die sides", fontsize=14)
 ax.set_ylabel("Frequency", fontsize=14)
 
 plt.show()
+
+"""Random walk"""
+
+rw = RandomWalk(50_000)
+rw.fill_walk()
+
