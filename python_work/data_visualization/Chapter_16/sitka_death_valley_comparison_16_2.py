@@ -3,8 +3,9 @@ from datetime import datetime
 
 import matplotlib.pyplot as plt
 
-filename = 'python_work/data_visualization/Chapter_16/data/death_valley_2018_simple.csv'
-with open(filename) as f:
+filename_dv = 'python_work/data_visualization/Chapter_16/data/death_valley_2018_simple.csv'
+filename_s = 'python_work/data_visualization/Chapter_16/data/sitka_weather_2018_simple.csv'
+with open(filename_dv) as f:
     reader = csv.reader(f)
     header_row = next(reader)
 
@@ -15,6 +16,24 @@ with open(filename) as f:
         try:
             high = int(row[4])
             low = int(row[5])
+        except ValueError:
+            print(f"Missing data for {current_date}")
+        else:
+            dates.append(current_date)
+            highs.append(high)
+            lows.append(low)
+            
+with open(filename_s) as f:
+    reader = csv.reader(f)
+    header_row = next(reader)
+    
+     # Get dates, and high and low temperatures from this file.
+    dates, highs, lows = [], [], []
+    for row in reader:
+        current_date = datetime.strptime(row[2], '%Y-%m-%d')
+        try:
+            high = int(row[5])
+            low = int(row[6])
         except ValueError:
             print(f"Missing data for {current_date}")
         else:
