@@ -9,10 +9,6 @@ def get_indexes(header_row):
     tmax_index = header_row.index('TMAX')
     return tmin_index, tmax_index
 
-def get_station_name(header_row):
-    """Get station name from header row."""
-    return header_row[1]
-
 def plot_temp(filename):
     """Plot high and low temperatures from the given CSV file."""
     with open(filename) as f:
@@ -23,7 +19,7 @@ def plot_temp(filename):
         tmin_index, tmax_index = get_indexes(header_row)
         
         # Get station name.
-        station_name = get_station_name(header_row)
+        station_name = next(reader)[1]
         
         # Get dates, highs, and lows from this file.
         dates, highs, lows = [], [], []
@@ -59,5 +55,5 @@ def plot_temp(filename):
         
         plt.show()
 # Usage
-filename = 'python_work/data_visualization/Chapter_16/data/kyiv_2024_01j_02f_20.csv'
+filename = 'python_work/data_visualization/Chapter_16/data/houston_internetional_airport.csv'
 plot_temp(filename)
