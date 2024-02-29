@@ -4,7 +4,12 @@ import requests
 url = 'https://api.github.com/search/repositories?q=language:python&sort=stars'
 headers = {'Accept':'application/vnd.github.v3+json'}
 r = requests.get(url, headers=headers)
-print(f"Status code: {r.status_code}")
+
+def status_code_response():
+    """Print status code of API call"""
+    print(f"Status code: {r.status_code}")
+    return r.status_code
+status_code_response()
 
 # Store API response in a variable.
 response_dict = r.json()
