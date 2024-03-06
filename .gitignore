@@ -3,3 +3,7 @@ __pycache__/
 
 # Virtual environment
 ll_env/
+piz_env/
+
+# Secret keys
+python_work/web_applications/Chapter_18/pizzeria/pizzeria/secret_key.py
