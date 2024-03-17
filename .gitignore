@@ -5,6 +5,7 @@ __pycache__/
 ll_env/
 piz_env/
 mp_env/
+b_env/
 
 # Secret keys
 python_work/web_applications/Chapter_18/pizzeria/pizzeria/secret_key.py
