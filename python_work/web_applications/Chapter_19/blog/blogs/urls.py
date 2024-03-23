@@ -13,5 +13,8 @@ urlpatterns = [
     path('blogs/', views.blogs, name='blogs'),
     
     # Detail page for a single blog.
-    path('blogs/<int:blog_id>', views.blog, name='blog')
+    path('blogs/<int:blog_id>', views.blog, name='blog'),
+    
+    # Page for adding a new blog
+    path('new_blog/', views.new_blog, name="new_blog"),
 ]
