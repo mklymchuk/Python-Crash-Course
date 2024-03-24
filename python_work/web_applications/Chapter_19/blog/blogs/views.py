@@ -18,13 +18,14 @@ def blog(request, blog_id):
     blog = BlogPost.objects.get(id=blog_id)
     context = {
         'blog': blog,
+        'blog_title': blog.title,
         'blog_text': blog.text,
         'date_added': blog.date_added,
         }
     return render(request, 'blogs/blog.html', context)
 
 def new_blog(request):
-    """Add a new blog."""
+    """Add a new blog."""    
     if request.method != 'POST':
         # No data submitted; create a blank form.
         form = BlogForm()
@@ -33,7 +34,7 @@ def new_blog(request):
         form = BlogForm(data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('blogs:blogs')
+            return redirect('blogs:blog')
         
     # Display a blank invalid form.
     context = {'form': form}
