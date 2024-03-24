@@ -16,7 +16,11 @@ def blogs(request):
 def blog(request, blog_id):
     """Show a single blog."""
     blog = BlogPost.objects.get(id=blog_id)
-    context = {'blog': blog, 'blog_text': blog.text, 'date_added': blog.date_added}
+    context = {
+        'blog': blog,
+        'blog_text': blog.text,
+        'date_added': blog.date_added,
+        }
     return render(request, 'blogs/blog.html', context)
 
 def new_blog(request):

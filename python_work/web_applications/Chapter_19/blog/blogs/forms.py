@@ -1,9 +1,9 @@
 from django import forms
 
-from models import BlogPost
+from .models import BlogPost
 
 class BlogForm(forms.ModelForm):
     class Meta:
         model = BlogPost
-        firlds = ['text']
+        fields = ['text']
         labels = {'text' : ''}
