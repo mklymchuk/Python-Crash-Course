@@ -25,17 +25,29 @@ def blog(request, blog_id):
     return render(request, 'blogs/blog.html', context)
 
 def new_blog(request):
-    """Add a new blog."""    
-    if request.method != 'POST':
-        # No data submitted; create a blank form.
-        form = BlogForm()
-    else:
-        # POST data submitted; create data.
-        form = BlogForm(data=request.POST)
+    if request.method == 'POST':
+        form = BlogForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('blogs:blog')
-        
-    # Display a blank invalid form.
+            blog = form.save()  # Save the form and get the saved blog object
+            # Redirect to the 'blog' URL with the blog's ID as an argument
+            return redirect('blogs:blog', blog_id=blog.id)
+    else:
+        form = BlogForm()
     context = {'form': form}
     return render(request, 'blogs/new_blog.html', context)
+
+def edit_blog(request, blog_id):
+    """Edit an existing blog."""
+    blog = BlogPost.objects.get(id=blog_id)
+    
+    if request.method != 'POST':
+        # Initial request; pre-fill form with the current blog.
+        form = BlogForm(instance=blog)
+    else:
+        # POST data submitted; process data.
+        form = BlogForm(instance=blog, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blogs:blog', blog_id=blog.id)
+    context = {'blog': blog, 'form': form}
+    return render(request, 'blogs/blog_edit.html', context)

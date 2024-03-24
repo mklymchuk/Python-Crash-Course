@@ -5,5 +5,8 @@
 
 <p>Blog Text: {{ blog_text }}</p>
 <p>Date Added: {{ date_added|date:'M d, Y H:i' }}</p>
+<p>
+    <a href="{% url 'blogs:edit_blog' blog.id %}">Edit blog</a>
+</p>
 
 {% endblock content %}
