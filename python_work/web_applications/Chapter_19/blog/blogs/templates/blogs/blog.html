@@ -1,12 +1,21 @@
 {% extends "blogs/base.html" %}
 
-{% block content %}
-<p>Title: {{ blog_title }}</p>
+{% block page_header %}
+    <h3>{{ blog_title }}</h3>
+{% endblock page_header %}
 
-<p>Blog Text: {{ blog_text }}</p>
-<p>Date Added: {{ date_added|date:'M d, Y H:i' }}</p>
+{% block content %}
 <p>
     <a href="{% url 'blogs:edit_blog' blog.id %}">Edit blog</a>
 </p>
+
+<div class="card mb-3">
+    <h4 class="card-header">
+        {{ date_added|date:'M d, Y H:i' }}
+    </h4>
+    <div class="card-body">
+        {{ blog_text }}
+    </div>
+</div>
 
 {% endblock content %}

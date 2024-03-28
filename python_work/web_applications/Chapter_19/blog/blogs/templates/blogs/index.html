@@ -1,6 +1,12 @@
 {% extends "blogs/base.html" %}
 
-{% block content %}
+{% block page_header %}
+    <div class="jumbotron">
+        <h1 class="display-3">A simple blog page.</h1>
 
-<p>A simple blog page.</p>
-{% endblock content%}
+        <p class="lead">Make your own blog.</p>
+
+        <a class="btn btn-lg btn-primary" href="{% url 'users:register' %}"
+        role="button">Register &raquo;</a>
+    </div>
+{% endblock page_header %}
