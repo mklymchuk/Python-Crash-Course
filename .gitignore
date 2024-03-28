@@ -9,3 +9,6 @@ b_env/
 
 # Secret keys
 python_work/web_applications/Chapter_18/pizzeria/pizzeria/secret_key.py
+
+# Ignore databases
+*.sqlite3
